@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="A campus IT support request management system."
+  >
+
+  <title>Campus IT Support Desk</title>
+
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+  <a href="#main-content" class="skip-link">
+    Skip to main content
+  </a>
+
+  <header class="site-header">
+    <div class="header-content">
+      <a href="#home" class="brand">
+        <span class="brand-icon">IT</span>
+        <span>Campus Support Desk</span>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#manage">Manage Records</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+
+    <!-- HOME SECTION -->
+    <section id="home" class="hero">
+      <p class="eyebrow">
+        MULUNGUSHI UNIVERSITY | ICT251
+      </p>
+
+      <h1>Campus IT Support Desk</h1>
+
+      <p>
+        Record computer support requests, manage their progress,
+        and keep track of network, software, and hardware issues.
+      </p>
+
+      <a href="#manage" class="button primary">
+        Manage Requests
+      </a>
+
+      <p class="demo-notice">
+        This version uses fictional browser demonstration data.
+      </p>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="summary" aria-label="Request summary">
+      <article class="summary-card">
+        <h2>Total Requests</h2>
+        <p id="total-count">0</p>
+      </article>
+
+      <article class="summary-card">
+        <h2>Pending</h2>
+        <p id="pending-count">0</p>
+      </article>
+
+      <article class="summary-card">
+        <h2>In progress</h2>
+        <p id="progress-count">0</p>
+      </article>
+
+      <article class="summary-card">
+        <h2>Completed</h2>
+        <p id="completed-count">0</p>
+      </article>
+    </section>
+
+    <!-- MANAGE RECORDS SECTION -->
+    <section id="manage" class="section">
+      <div class="section-heading">
+        <p class="eyebrow">YOUR WORKSPACE</p>
+        <h2>Manage Records</h2>
+      </div>
+
+      <p
+        id="message"
+        class="message"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></p>
+
+      <div class="workspace">
+
+        <!-- ADD AND EDIT FORM -->
+        <section class="panel form-panel">
+          <h3 id="form-heading">Add a Request</h3>
+
+          <p class="muted">
+            Complete all fields below.
+          </p>
+
+          <p id="editing-notice" class="editing-notice" hidden></p>
+
+          <form id="record-form" novalidate>
+            <div class="form-group">
+              <label for="title">Title</label>
+
+              <input
+                type="text"
+                id="title"
+                name="title"
+                minlength="3"
+                maxlength="80"
+                placeholder="Example: Computer will not start"
+                aria-describedby="title-help title-error"
+                required
+              >
+
+              <small id="title-help">
+                Enter 3–80 characters.
+              </small>
+
+              <small
+                id="title-error"
+                class="field-error"
+              ></small>
+            </div>
+
+            <div class="form-group">
+              <label for="category">Category</label>
+
+              <select
+                id="category"
+                name="category"
+                aria-describedby="category-error"
+                required
+              >
+                <option value="">Choose a category</option>
+                <option value="Network">Network</option>
+                <option value="Software">Software</option>
+                <option value="Hardware">Hardware</option>
+              </select>
+
+              <small
+                id="category-error"
+                class="field-error"
+              ></small>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+
+              <textarea
+                id="description"
+                name="description"
+                rows="5"
+                minlength="5"
+                maxlength="300"
+                placeholder="Explain the problem and its location."
+                aria-describedby="description-help description-error"
+                required
+              ></textarea>
+
+              <small id="description-help">
+                Enter 5–300 characters.
+              </small>
+
+              <small
+                id="description-error"
+                class="field-error"
+              ></small>
+            </div>
+
+            <div class="form-group">
+              <label for="status">Status</label>
+
+              <select
+                id="status"
+                name="status"
+                aria-describedby="status-error"
+                required
+              >
+                <option value="Pending">Pending</option>
+                <option value="In progress">In progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+
+              <small
+                id="status-error"
+                class="field-error"
+              ></small>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="submit"
+                id="save-button"
+                class="primary"
+              >
+                Add Request
+              </button>
+
+              <button
+                type="button"
+                id="cancel-edit"
+                class="secondary"
+                hidden
+              >
+                Cancel Edit
+              </button>
+            </div>
+          </form>
+
+          <p class="storage-note">
+            Records are saved in this browser using localStorage.
+          </p>
+        </section>
+
+        <!-- RECORD LIST -->
+        <section class="panel records-panel">
+          <div class="board-heading">
+            <h3>Request Board</h3>
+
+            <p
+              id="result-count"
+              aria-live="polite"
+            >
+              0 records
+            </p>
+          </div>
+
+          <div class="filters">
+            <div class="search-control">
+              <label for="search">Search by title</label>
+
+              <input
+                type="search"
+                id="search"
+                placeholder="Search requests..."
+              >
+            </div>
+
+            <div>
+              <label for="status-filter">
+                Filter by status
+              </label>
+
+              <select id="status-filter">
+                <option value="">All statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="In progress">In progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+
+            <button
+              type="button"
+              id="clear-filters"
+              class="secondary"
+            >
+              Clear
+            </button>
+          </div>
+
+          <div id="record-list" class="record-grid"></div>
+
+          <p id="empty-state" class="empty-state" hidden></p>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="section about-panel">
+      <p class="eyebrow">ABOUT THE PROJECT</p>
+
+      <h2>Campus IT Support Desk</h2>
+
+      <p>
+        This system helps users record and manage computer
+        support requests involving networks, software, and hardware.
+      </p>
+
+      <dl class="about-details">
+        <div>
+          <dt>Project name</dt>
+          <dd>Campus IT Support Desk</dd>
+        </div>
+
+        <div>
+          <dt>Student name</dt>
+          <dd>MAYBIN MWEEMBA</dd>
+        </div>
+
+        <div>
+          <dt>Student number</dt>
+          <dd>202505690</dd>
+        </div>
+
+        <div>
+          <dt>Course</dt>
+          <dd>ICT251 – Introduction to Web Technologies</dd>
+        </div>
+
+        <div>
+          <dt>Activity</dt>
+          <dd>Activity 6 – Frontend Development</dd>
+        </div>
+      </dl>
+
+      <p class="demo-notice">
+        This version uses browser demonstration data.
+        All starting records are fictional.
+        Records are stored in localStorage and are not shared
+        between different browsers or devices.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>
+      Created by MAYBIN MWEEMBA |
+      Mulungushi University | 2026
+    </p>
+  </footer>
+
+  <!-- VIEW DETAILS DIALOG -->
+  <dialog id="view-dialog" aria-labelledby="view-title">
+    <h2 id="view-title">Request Details</h2>
+
+    <dl id="view-details" class="view-details"></dl>
+
+    <button
+      type="button"
+      id="close-view"
+      class="primary"
+      autofocus
+    >
+      Close
+    </button>
+  </dialog>
+
+  <!-- DELETE CONFIRMATION DIALOG -->
+  <dialog id="delete-dialog" aria-labelledby="delete-heading">
+    <h2 id="delete-heading">Delete Request?</h2>
+
+    <p id="delete-description"></p>
+
+    <p>
+      This request will be removed from this browser.
+    </p>
+
+    <div class="dialog-actions">
+      <button
+        type="button"
+        id="cancel-delete"
+        class="secondary"
+        autofocus
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        id="confirm-delete"
+        class="danger"
+      >
+        Delete Request
+      </button>
+    </div>
+  </dialog>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
